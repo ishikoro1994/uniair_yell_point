@@ -23,9 +23,11 @@ $(function() {
         LoadPointJson();
     });
     $('#select_event_name').on('change', function() {
+        $('[name="rdo_select_grp"]').prop("disabled", false);
         LoadPointJson();
     });
     $('#select_member_name').on('change', function() {
+        $('[name="rdo_select_grp"]').prop("disabled", true);
         LoadPointJsonByMember();
     });
 });
@@ -45,15 +47,18 @@ function LoadMemberNameListJson() {
 
 function LoadPointJson() {
     var eventName = $('#select_event_name').val();
+    $('#select_member_name').val("");
 
     $('#point_list_table').empty();
+
+    if (eventName == "") return;
     $.getJSON('./data/' + eventName + '.json' , function(data) {
         if (data) {
             var headInfo = '';
             headInfo += '<thead style="text-align: center;">';
             headInfo += '<tr>';
             data.header.forEach(function(element){
-                if (element.length > 8) element = element.replace('～', '～<br>')
+                if (element.length > 8) element = element.replace('～', '～<br>');
                 headInfo += '<th>' + element + '</th>';
               });
             headInfo += '</tr>';
@@ -61,28 +66,32 @@ function LoadPointJson() {
 
             $('#point_list_table').append(headInfo);
             $('#point_list_table').append('<tbody id="point_list_tbody">');
+            var rowCnt = 0;
             data.data.forEach(function(element){
                 var rowInfo = '';
                 var grpClass = GRP_SAKURA_CLASS;
                 if (element.grp == "日向坂46") grpClass = GRP_HINATA_CLASS;
                 if (GetCheckedGrp() != "all" && GetCheckedGrp() != grpClass.replace('grp_', '')) return;
 
-                rowInfo += '<tr>';
+                rowCnt++;
+                var rowClass = "odd_row";
+                if (rowCnt % 2 == 0) rowClass = "even_row";
+                rowInfo += '<tr class="' + rowClass + '">';
                 rowInfo += '<td class="grp '+ grpClass +'">' + element.grp + '</td>';
                 rowInfo += '<td class="name">' + element.name + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn7) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn6) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn5) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn4) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn3) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn2) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.rankIn1) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top6to10) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top5) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top4) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top3) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top2) + '</td>';
-                rowInfo += '<td class="pt_row">' + addFigure(element.top1) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn7) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn6) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn5) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn4) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn3) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn2) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.rankIn1) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top6to10) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top5) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top4) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top3) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top2) + '</td>';
+                rowInfo += '<td class="pt_col">' + addFigure(element.top1) + '</td>';
                 rowInfo += '</tr>';
                 $('#point_list_table').append(rowInfo);
             });
@@ -94,67 +103,90 @@ function LoadPointJson() {
 
 function LoadPointJsonByMember() {
     var memberName = $('#select_member_name').val();
+    $('#select_event_name').val("");
 
-    if (memberName == "") return;
-
-    alert('申し訳ありません。準備中です。');
-    var isDev = true;
-    if (isDev) return;
+    if (memberName == "") {
+        LoadPointJson();
+        return;
+    }
 
     var eventNameList = $('#select_event_name option');
 
     if (!memberName) return;
 
+    // リセット
     $('#point_list_table').empty();
+
+    var headInfo = '';
+    headInfo += '<thead style="text-align: center;">';
+    headInfo += '<tr>';
+    headInfo += '<th class="head_event_name">' + 'イベント名' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '</tr>';
+    headInfo += '</thead>';
+
+    $('#point_list_table').append(headInfo);
+    $('#point_list_table').append('<tbody id="point_list_tbody">');
+
+    var rowCnt = 0;
+    // イベントの数だけループ
     eventNameList.each(function() {
-        $.getJSON('./data/' + this.value + '.json' , function(data) {
+        var eventName = this.value;
+        $.getJSON('./data/' + eventName + '.json' , function(data) {
             if (data) {
                 var isExistsSelectMember = false;
                 var rowInfo = '';
+
+                rowCnt++;
+                var rowClass = "odd_row";
+                if (rowCnt % 2 == 0) rowClass = "even_row";
+
+                rowInfo += '<tr class="rank_row ' + rowClass + '">';
+                rowInfo += '<td rowspan="2">' + eventName + '</td>';
+                data.header.forEach(function(element){
+                    if (element == "グループ" || element == "メンバー名") return;
+                    if (element.length > 8) element = element.replace('～', '～<br>');
+                    rowInfo += '<td>' + element + '</td>';
+                  });
+                rowInfo += '</tr>';
                 data.data.forEach(function(element){
                     if (memberName != element.name) return;
                     isExistsSelectMember = true;
 
-                    var grpClass = GRP_SAKURA_CLASS;
-                    if (element.grp == "日向坂46") grpClass = GRP_HINATA_CLASS;
-
-                    rowInfo += '<tr>';
-                    rowInfo += '<td class="grp '+ grpClass +'">' + element.grp + '</td>';
-                    rowInfo += '<td class="name">' + element.name + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn7) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn6) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn5) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn4) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn3) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn2) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.rankIn1) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top6to10) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top5) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top4) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top3) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top2) + '</td>';
-                    rowInfo += '<td class="pt_row">' + addFigure(element.top1) + '</td>';
+                    rowInfo += '<tr class="pt_row ' + rowClass + '">';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn7) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn6) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn5) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn4) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn3) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn2) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.rankIn1) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top6to10) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top5) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top4) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top3) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top2) + '</td>';
+                    rowInfo += '<td class="pt_col">' + addFigure(element.top1) + '</td>';
                     rowInfo += '</tr>';
-                });
-
-                var headInfo = '';
-                headInfo += '<thead style="text-align: center;">';
-                headInfo += '<tr>';
-                data.header.forEach(function(element){
-                    if (element.length > 8) element = element.replace('～', '～<br>')
-                    headInfo += '<th>' + element + '</th>';
-                  });
-                headInfo += '</tr>';
-                headInfo += '</thead>';
-
-                $('#point_list_table').append(headInfo);
-                $('#point_list_table').append('<tbody id="point_list_tbody">');
-
-                $('#point_list_table').append(rowInfo);
-                $('#point_list_table').append('</tbody>');
+                    });
+                // 対象イベントにメンバーが在籍している場合のみ表示
+                if (isExistsSelectMember) $('#point_list_table').append(rowInfo);
             }
         });
     });
+    $('#point_list_table').append('</tbody>');
 }
 
 function GetCheckedGrp() {

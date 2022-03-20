@@ -5,14 +5,22 @@
 }
 
 .grp_sakura {
-  background: #ffdbed;
+  background: #ffdbed !important;
 }
 
 .grp_hinata {
-  background: #7cc7e8;
+  background: #7cc7e8 !important;
 }
 
-.pt_row {
+.odd_row {
+  background-color: white;
+}
+
+.even_row {
+  background-color: floralwhite;
+}
+
+.pt_col {
   text-align: right;
 }
 
@@ -22,4 +30,8 @@
 
 .name {
   width: 6rem;
+}
+
+.head_event_name {
+  width: 200px;
 }
