@@ -57,9 +57,15 @@ function LoadPointJson() {
             var headInfo = '';
             headInfo += '<thead style="text-align: center;">';
             headInfo += '<tr>';
+            var headerCnt = 0;
             data.header.forEach(function(element){
-                if (element.length > 8) element = element.replace('～', '～<br>');
-                headInfo += '<th>' + element + '</th>';
+                headerCnt++;
+                var headerClass = "";
+                if (headerCnt >= 3 && headerCnt <= 7) headerClass = "header_low";
+                if (headerCnt >= 8 && headerCnt <= 9) headerClass = "header_middle";
+                if (headerCnt > 9) headerClass = "header_high";
+                element = element.replace('～', '～<br>');
+                headInfo += '<th class="' + headerClass + '">' + element + '</th>';
               });
             headInfo += '</tr>';
             headInfo += '</thead>';
@@ -149,11 +155,7 @@ function LoadPointJsonByMember() {
                 var isExistsSelectMember = false;
                 var rowInfo = '';
 
-                rowCnt++;
-                var rowClass = "odd_row";
-                if (rowCnt % 2 == 0) rowClass = "even_row";
-
-                rowInfo += '<tr class="rank_row ' + rowClass + '">';
+                rowInfo += '<tr class="rank_row rowClass">';
                 rowInfo += '<td rowspan="2">' + eventName + '</td>';
                 data.header.forEach(function(element){
                     if (element == "グループ" || element == "メンバー名") return;
@@ -165,7 +167,7 @@ function LoadPointJsonByMember() {
                     if (memberName != element.name) return;
                     isExistsSelectMember = true;
 
-                    rowInfo += '<tr class="pt_row ' + rowClass + '">';
+                    rowInfo += '<tr class="pt_row rowClass">';
                     rowInfo += '<td class="pt_col">' + addFigure(element.rankIn7) + '</td>';
                     rowInfo += '<td class="pt_col">' + addFigure(element.rankIn6) + '</td>';
                     rowInfo += '<td class="pt_col">' + addFigure(element.rankIn5) + '</td>';
@@ -182,7 +184,13 @@ function LoadPointJsonByMember() {
                     rowInfo += '</tr>';
                     });
                 // 対象イベントにメンバーが在籍している場合のみ表示
-                if (isExistsSelectMember) $('#point_list_table').append(rowInfo);
+                if (isExistsSelectMember) {
+                    rowCnt++;
+                    var rowClass = "odd_row";
+                    if (rowCnt % 2 == 0) rowClass = "even_row";
+                    rowInfo = rowInfo.replaceAll('rowClass', rowClass);
+                    $('#point_list_table').append(rowInfo);
+                }
             }
         });
     });

@@ -35,3 +35,15 @@
 .head_event_name {
   width: 200px;
 }
+
+.header_low {
+  width: 80px;
+}
+
+.header_middle {
+  width: 90px;
+}
+
+.header_high {
+  width: 100px;
+}
