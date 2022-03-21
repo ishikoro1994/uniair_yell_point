@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+#caution_label {
+  color: red;
+}
+
 #point_list_table > thead {
   background: #5eb954;
 }
@@ -46,4 +50,52 @@
 
 .header_high {
   width: 100px;
+}
+
+/*ウィンドウ幅が767px以上の場合に適用*/
+@media screen and (min-width: 1025px) {
+  /*ヘッダタイトル*/
+  #head_title {
+    font-size: 25px;
+  }
+
+  #caution_label {
+    font-size: 14px;
+  }
+
+  #contact {
+    font-size: 14px;
+  }
+}
+
+/*ウィンドウ幅が最大767pxまでの場合に適用 タブレット*/
+@media screen and (max-width: 1024px) {
+  /*ヘッダタイトル*/
+  #head_title {
+    font-size: 25px;
+  }
+
+  #caution_label {
+    font-size: 14px;
+  }
+
+  #contact {
+    font-size: 14px;
+  }
+}
+
+/*ウィンドウ幅が最大479pxまでの場合に適用 スマホ*/
+@media screen and (max-width: 599px) {
+  /*ヘッダタイトル*/
+  #head_title {
+    font-size: 18px;
+  }
+
+  #caution_label {
+    font-size: 12px;
+  }
+
+  #contact {
+    font-size: 12px;
+  }
 }

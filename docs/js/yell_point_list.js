@@ -6,6 +6,7 @@ const GRP_HINATA_CLASS = "grp_hinata";
  */
 $(document).ready(function() {
     var d = new $.Deferred();
+    $('#point_list_table').hide();
     async(function() {
         LoadMemberNameListJson();
         LoadPointJson();
@@ -49,9 +50,15 @@ function LoadPointJson() {
     var eventName = $('#select_event_name').val();
     $('#select_member_name').val("");
 
+    $('#point_list_table').hide();
     $('#point_list_table').empty();
+    $('#caution_label').show();
 
-    if (eventName == "") return;
+    if (eventName == "") {
+        $('#rdo_select_grp_all').prop('checked', true);
+        return;
+    }
+
     $.getJSON('./data/' + eventName + '.json' , function(data) {
         if (data) {
             var headInfo = '';
@@ -102,14 +109,16 @@ function LoadPointJson() {
                 $('#point_list_table').append(rowInfo);
             });
             $('#point_list_table').append('</tbody>');
+            $('#point_list_table').show();
+            $('#caution_label').hide();
         }
-
     });
 }
 
 function LoadPointJsonByMember() {
     var memberName = $('#select_member_name').val();
     $('#select_event_name').val("");
+    $('#rdo_select_grp_all').prop('checked', true);
 
     if (memberName == "") {
         LoadPointJson();
@@ -117,11 +126,12 @@ function LoadPointJsonByMember() {
     }
 
     var eventNameList = $('#select_event_name option');
+    // リセット
+    $('#point_list_table').hide();
+    $('#point_list_table').empty();
+    $('#caution_label').show();
 
     if (!memberName) return;
-
-    // リセット
-    $('#point_list_table').empty();
 
     var headInfo = '';
     headInfo += '<thead style="text-align: center;">';
@@ -195,6 +205,8 @@ function LoadPointJsonByMember() {
         });
     });
     $('#point_list_table').append('</tbody>');
+    $('#point_list_table').show();
+    $('#caution_label').hide();
 }
 
 function GetCheckedGrp() {
