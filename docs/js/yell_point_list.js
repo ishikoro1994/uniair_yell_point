@@ -127,19 +127,19 @@ function LoadPointJsonByMember() {
     headInfo += '<thead style="text-align: center;">';
     headInfo += '<tr>';
     headInfo += '<th class="head_event_name">' + 'イベント名' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
-    headInfo += '<th>' + '-' + '</th>';
+    headInfo += '<th class="header_low">' + '-' + '</th>';
+    headInfo += '<th class="header_low">' + '-' + '</th>';
+    headInfo += '<th class="header_low">' + '-' + '</th>';
+    headInfo += '<th class="header_low">' + '-' + '</th>';
+    headInfo += '<th class="header_low">' + '-' + '</th>';
+    headInfo += '<th class="header_middle">' + '-' + '</th>';
+    headInfo += '<th class="header_middle">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
+    headInfo += '<th class="header_high">' + '-' + '</th>';
     headInfo += '</tr>';
     headInfo += '</thead>';
 
@@ -159,8 +159,8 @@ function LoadPointJsonByMember() {
                 rowInfo += '<td rowspan="2">' + eventName + '</td>';
                 data.header.forEach(function(element){
                     if (element == "グループ" || element == "メンバー名") return;
-                    if (element.length > 8) element = element.replace('～', '～<br>');
-                    rowInfo += '<td>' + element + '</td>';
+                    element = element.replace('～', '～<br>');
+                    rowInfo += '<td style="text-align: center;">' + element + '</td>';
                   });
                 rowInfo += '</tr>';
                 data.data.forEach(function(element){
